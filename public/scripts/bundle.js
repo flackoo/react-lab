@@ -1588,6 +1588,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _MovieCard = require('./sub-components/MovieCard');
+
+var _MovieCard2 = _interopRequireDefault(_MovieCard);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1599,19 +1603,59 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Home = function (_React$Component) {
   _inherits(Home, _React$Component);
 
-  function Home() {
+  function Home(props) {
     _classCallCheck(this, Home);
 
-    return _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this, props));
+
+    _this.state = {
+      topTenMovies: [],
+      error: ''
+    };
+    return _this;
   }
 
   _createClass(Home, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      var request = {
+        url: '/api/movies/top-ten',
+        method: 'get'
+      };
+      $.ajax(request).done(function (data) {
+        return _this2.setState({ topTenMovies: data });
+      }).fail(function (error) {
+        return _this2.setState({ error: error.responseJSON.message });
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var movies = this.state.topTenMovies.map(function (movie, index) {
+        return _react2.default.createElement(_MovieCard2.default, { key: movie._id,
+          movie: movie,
+          index: index });
+      });
       return _react2.default.createElement(
         'div',
-        null,
-        'And I am Home Component'
+        { className: 'container' },
+        _react2.default.createElement(
+          'h3',
+          { className: 'text-center' },
+          'Welcome to',
+          _react2.default.createElement(
+            'strong',
+            null,
+            ' Movie Database'
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'list-group' },
+          movies
+        )
       );
     }
   }]);
@@ -1621,7 +1665,7 @@ var Home = function (_React$Component) {
 
 exports.default = Home;
 
-},{"react":"react"}],23:[function(require,module,exports){
+},{"./sub-components/MovieCard":25,"react":"react"}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1906,7 +1950,7 @@ var AddMovie = function (_React$Component) {
 
 exports.default = AddMovie;
 
-},{"../utilities/Helpers":27,"react":"react"}],24:[function(require,module,exports){
+},{"../utilities/Helpers":28,"react":"react"}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2044,6 +2088,99 @@ exports.default = Navbar;
 },{"react":"react","react-router":"react-router"}],25:[function(require,module,exports){
 'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MovieCard = function (_React$Component) {
+  _inherits(MovieCard, _React$Component);
+
+  function MovieCard(props) {
+    _classCallCheck(this, MovieCard);
+
+    var _this = _possibleConstructorReturn(this, (MovieCard.__proto__ || Object.getPrototypeOf(MovieCard)).call(this, props));
+
+    _this.state = {
+      movieScore: _this.props.movie.score,
+      movieVotes: _this.props.movie.votes
+    };
+    return _this;
+  }
+
+  _createClass(MovieCard, [{
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        { className: 'animated fadeIn' },
+        _react2.default.createElement(
+          'div',
+          { className: 'media movie' },
+          _react2.default.createElement(
+            'span',
+            { className: 'position pull-left' },
+            this.props.index + 1
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'media-body' },
+            _react2.default.createElement(
+              'h4',
+              { className: 'media-heading' },
+              _react2.default.createElement(
+                _reactRouter.Link,
+                { to: '/movie/' + this.props.movie._id + '/' + this.props.movie.name },
+                this.props.movie.name
+              )
+            ),
+            _react2.default.createElement(
+              'small',
+              null,
+              'Genres: ',
+              this.props.movie.genres
+            ),
+            _react2.default.createElement('br', null),
+            _react2.default.createElement(
+              'p',
+              null,
+              this.props.movie.genres
+            ),
+            _react2.default.createElement(
+              'span',
+              { className: 'votes' },
+              'Votes:'
+            )
+          )
+        ),
+        _react2.default.createElement('div', { id: 'clear' })
+      );
+    }
+  }]);
+
+  return MovieCard;
+}(_react2.default.Component);
+
+exports.default = MovieCard;
+
+},{"react":"react","react-router":"react-router"}],26:[function(require,module,exports){
+'use strict';
+
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
@@ -2074,7 +2211,7 @@ _reactDom2.default.render(_react2.default.createElement(
     _routes2.default
 ), document.getElementById('app'));
 
-},{"./routes":26,"history/lib/createBrowserHistory":9,"react":"react","react-dom":"react-dom","react-router":"react-router"}],26:[function(require,module,exports){
+},{"./routes":27,"history/lib/createBrowserHistory":9,"react":"react","react-dom":"react-dom","react-router":"react-router"}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2108,7 +2245,7 @@ exports.default = _react2.default.createElement(
   _react2.default.createElement(_reactRouter.Route, { path: '/movie/Add', component: _MovieAdd2.default })
 );
 
-},{"./components/App":20,"./components/Home":22,"./components/MovieAdd":23,"react":"react","react-router":"react-router"}],27:[function(require,module,exports){
+},{"./components/App":20,"./components/Home":22,"./components/MovieAdd":23,"react":"react","react-router":"react-router"}],28:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2155,6 +2292,6 @@ var Helpers = function () {
 
 exports.default = Helpers;
 
-},{}]},{},[25])
+},{}]},{},[26])
 
 //# sourceMappingURL=bundle.js.map
