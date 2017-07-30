@@ -3,6 +3,9 @@ import React from 'react'
 import Navbar from './Navbar'
 import Footer from './Footer'
 
+import UserStore from '../stores/UserStore'
+import UserActions from '../actions/UserActions'
+
 export default class App extends React.Component {
   constructor (props) {
     super(props)
@@ -11,11 +14,20 @@ export default class App extends React.Component {
       loggedInUserId: ''
     }
 
-    this.LOGIN_DEFAULT_USER = this.LOGIN_DEFAULT_USER.bind(this)
+    this.onChange = this.onChange.bind(this)
+  }
+
+  onChange (state) {
+    this.setState(state)
   }
 
   componentDidMount () {
-    this.LOGIN_DEFAULT_USER()
+    UserStore.listen(this.onChange)
+    UserActions.loginUser()
+  }
+
+  componentWillUnmount () {
+    UserStore.unlisten(this.onChange)
   }
 
   // Temporary Login function. User register and login forms will be implemented on part 3
