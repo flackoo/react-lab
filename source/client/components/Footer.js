@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router'
 
 import FooterStore from '../stores/FooterStore'
+import FooterActions from '../actions/FooterActions'
 
 export default class Footer extends React.Component {
   constructor (props) {
@@ -19,8 +20,8 @@ export default class Footer extends React.Component {
   componentDidMount () {
     FooterStore.listen(this.onChange)
 
-    FooterStore.getFiveRecentMovies()
-    this.interval = setInterval(() => FooterStore.getFiveRecentMovies(), 30000)
+    FooterActions.getFiveRecentMovies()
+    this.interval = setInterval(() => FooterActions.getFiveRecentMovies(), 30000)
   }
 
   componentWillUnmount () {

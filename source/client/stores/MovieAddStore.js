@@ -23,6 +23,14 @@ class MovieAddStore {
     console.log('Failed to add movie', err)
   }
 
+  onGetMoviePosterSuccess (data) {
+    this.moviePosterUrl = data.posterUrl
+  }
+
+  onGetMoviePosterFail (err) {
+    console.log('Could not get movie post', err)
+  }
+
   onHandleNameChange (e) {
     this.name = e.target.value
     this.nameValidationState = ''
@@ -30,12 +38,20 @@ class MovieAddStore {
   }
 
   onHandleDescriptionChange (e) {
-    console.log(e)
+    console.log('Handling description change.Beeep!')
+    this.description = e.target.value
+    this.genresValidationState = ''
+    this.helpBlock = ''
+  }
+
+  onHandleGenresChange (e) {
     let genreValue = e.target.value
     if (this.genres.indexOf(genreValue) !== -1) {
       this.genres = Helpers.appendToArray(genreValue, this.genres)
+      e.target.setAttribute('checked', 'true')
     } else {
       this.genres = Helpers.removeFromArray(genreValue, this.genres)
+      e.target.setAttribute('checked', 'false')
     }
     this.genresValidationState = ''
     this.helpBlock = ''

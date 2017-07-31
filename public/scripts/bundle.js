@@ -3019,8 +3019,8 @@ var FooterActions = function () {
   }
 
   _createClass(FooterActions, [{
-    key: 'getFiveRecentMoviesSuccess',
-    value: function getFiveRecentMoviesSuccess() {
+    key: 'getFiveRecentMovies',
+    value: function getFiveRecentMovies() {
       var _this = this;
 
       var request = {
@@ -3328,9 +3328,7 @@ var App = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-    _this.state = {
-      loggedInUserId: ''
-    };
+    _this.state = _UserStore2.default.getState();
 
     _this.onChange = _this.onChange.bind(_this);
     return _this;
@@ -3352,63 +3350,13 @@ var App = function (_React$Component) {
     value: function componentWillUnmount() {
       _UserStore2.default.unlisten(this.onChange);
     }
-
-    // Temporary Login function. User register and login forms will be implemented on part 3
-
-  }, {
-    key: 'LOGIN_DEFAULT_USER',
-    value: function LOGIN_DEFAULT_USER() {
-      var _this2 = this;
-
-      var request = {
-        url: '/user/login',
-        method: 'post',
-        data: JSON.stringify({ username: 'admin', password: 'admin' }),
-        contentType: 'application/json'
-      };
-      $.ajax(request).done(function (userId) {
-        _this2.setState({
-          loggedInUserId: userId
-        });
-      }).fail(function (err) {
-        console.log('UserMenu: err', err);
-        _this2.setState({
-          loggedInUserId: '',
-          message: err.responseJSON.message
-        });
-      });
-    }
-  }, {
-    key: 'logoutUser',
-    value: function logoutUser() {
-      var _this3 = this;
-
-      var request = {
-        url: '/user/logout',
-        method: 'post'
-      };
-      $.ajax(request).done(function () {
-        _this3.setState({
-          loggedInUserId: ''
-        });
-      }).fail(function (err) {
-        _this3.setState({
-          error: err.responseJSON.message
-        });
-      });
-    }
   }, {
     key: 'render',
     value: function render() {
-      var userData = {
-        loggedInUserId: this.state.loggedInUserId,
-        loginUser: this.LOGIN_DEFAULT_USER,
-        logoutUser: this.logoutUser.bind(this)
-      };
       return _react2.default.createElement(
         'div',
         null,
-        _react2.default.createElement(_Navbar2.default, { history: this.props.history, userData: userData }),
+        _react2.default.createElement(_Navbar2.default, null),
         this.props.children,
         _react2.default.createElement(_Footer2.default, null)
       );
@@ -3438,6 +3386,10 @@ var _reactRouter = require('react-router');
 var _FooterStore = require('../stores/FooterStore');
 
 var _FooterStore2 = _interopRequireDefault(_FooterStore);
+
+var _FooterActions = require('../actions/FooterActions');
+
+var _FooterActions2 = _interopRequireDefault(_FooterActions);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3471,9 +3423,9 @@ var Footer = function (_React$Component) {
     value: function componentDidMount() {
       _FooterStore2.default.listen(this.onChange);
 
-      _FooterStore2.default.getFiveRecentMovies();
+      _FooterActions2.default.getFiveRecentMovies();
       this.interval = setInterval(function () {
-        return _FooterStore2.default.getFiveRecentMovies();
+        return _FooterActions2.default.getFiveRecentMovies();
       }, 30000);
     }
   }, {
@@ -3599,7 +3551,7 @@ var Footer = function (_React$Component) {
 
 exports.default = Footer;
 
-},{"../stores/FooterStore":51,"react":"react","react-router":"react-router"}],41:[function(require,module,exports){
+},{"../actions/FooterActions":33,"../stores/FooterStore":51,"react":"react","react-router":"react-router"}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -3711,17 +3663,13 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var _MovieAddStore = require('../stores/MovieAddStore');
-
-var _MovieAddStore2 = _interopRequireDefault(_MovieAddStore);
-
 var _MovieAddActions = require('../actions/MovieAddActions');
 
 var _MovieAddActions2 = _interopRequireDefault(_MovieAddActions);
 
-var _Helpers = require('../utilities/Helpers');
+var _MovieAddStore = require('../stores/MovieAddStore');
 
-var _Helpers2 = _interopRequireDefault(_Helpers);
+var _MovieAddStore2 = _interopRequireDefault(_MovieAddStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3753,6 +3701,7 @@ var AddMovie = function (_React$Component) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
+      console.log('Movie add listener attached.');
       _MovieAddStore2.default.listen(this.onChange);
     }
   }, {
@@ -3780,43 +3729,7 @@ var AddMovie = function (_React$Component) {
           description: this.state.description,
           genres: this.state.genres
         };
-
         _MovieAddActions2.default.addMovie(data);
-      }
-    }
-  }, {
-    key: 'handleNameChange',
-    value: function handleNameChange(e) {
-      var name = e.target.value;
-      this.setState({
-        name: name
-      });
-    }
-  }, {
-    key: 'handleDescriptionChange',
-    value: function handleDescriptionChange(e) {
-      var description = e.target.value;
-      this.setState({
-        description: description
-      });
-    }
-  }, {
-    key: 'handleGenresChange',
-    value: function handleGenresChange(e) {
-      var genreValue = e.target.value;
-      console.log('MovieAdd state', this.state);
-      if (this.state.genres.indexOf(genreValue) === -1) {
-        this.setState(function (prevState) {
-          return {
-            genres: _Helpers2.default.appendToArray(genreValue, prevState.genres)
-          };
-        });
-      } else {
-        this.setState(function (prevState) {
-          return {
-            genres: _Helpers2.default.removeFromArray(genreValue, prevState.genres)
-          };
-        });
       }
     }
   }, {
@@ -3895,7 +3808,7 @@ var AddMovie = function (_React$Component) {
                       { className: 'checkbox checkbox-inline' },
                       _react2.default.createElement('input', { type: 'checkbox', name: 'genres', id: 'horror', value: 'Horror',
                         checked: this.state.genres.indexOf('Horror') !== -1,
-                        onChange: this.handleGenresChange.bind(this) }),
+                        onClick: _MovieAddActions2.default.handleGenresChange }),
                       _react2.default.createElement(
                         'label',
                         { htmlFor: 'horror' },
@@ -3907,7 +3820,7 @@ var AddMovie = function (_React$Component) {
                       { className: 'checkbox checkbox-inline' },
                       _react2.default.createElement('input', { type: 'checkbox', name: 'genres', id: 'sci-fi', value: 'Sci-fi',
                         checked: this.state.genres.indexOf('Sci-fi') !== -1,
-                        onChange: this.handleGenresChange.bind(this) }),
+                        onClick: _MovieAddActions2.default.handleGenresChange }),
                       _react2.default.createElement(
                         'label',
                         { htmlFor: 'sci-fi' },
@@ -3919,7 +3832,7 @@ var AddMovie = function (_React$Component) {
                       { className: 'checkbox checkbox-inline' },
                       _react2.default.createElement('input', { type: 'checkbox', name: 'genres', id: 'fantasy', value: 'Fantasy',
                         checked: this.state.genres.indexOf('Fantasy') !== -1,
-                        onChange: this.handleGenresChange.bind(this) }),
+                        onClick: _MovieAddActions2.default.handleGenresChange }),
                       _react2.default.createElement(
                         'label',
                         { htmlFor: 'fantasy' },
@@ -3931,7 +3844,7 @@ var AddMovie = function (_React$Component) {
                       { className: 'checkbox checkbox-inline' },
                       _react2.default.createElement('input', { type: 'checkbox', name: 'genres', id: 'romance', value: 'Romance',
                         checked: this.state.genres.indexOf('Romance') !== -1,
-                        onChange: this.handleGenresChange.bind(this) }),
+                        onClick: _MovieAddActions2.default.handleGenresChange }),
                       _react2.default.createElement(
                         'label',
                         { htmlFor: 'romance' },
@@ -3943,7 +3856,7 @@ var AddMovie = function (_React$Component) {
                       { className: 'checkbox checkbox-inline' },
                       _react2.default.createElement('input', { type: 'checkbox', name: 'genres', id: 'thriller', value: 'Thriller',
                         checked: this.state.genres.indexOf('Thriller') !== -1,
-                        onChange: this.handleGenresChange.bind(this) }),
+                        onClick: _MovieAddActions2.default.handleGenresChange }),
                       _react2.default.createElement(
                         'label',
                         { htmlFor: 'thriller' },
@@ -3955,7 +3868,7 @@ var AddMovie = function (_React$Component) {
                       { className: 'checkbox checkbox-inline' },
                       _react2.default.createElement('input', { type: 'checkbox', name: 'genres', id: 'adventure', value: 'Adventure',
                         checked: this.state.genres.indexOf('Adventure') !== -1,
-                        onChange: this.handleGenresChange.bind(this) }),
+                        onClick: _MovieAddActions2.default.handleGenresChange }),
                       _react2.default.createElement(
                         'label',
                         { htmlFor: 'adventure' },
@@ -3982,7 +3895,7 @@ var AddMovie = function (_React$Component) {
 
 exports.default = AddMovie;
 
-},{"../actions/MovieAddActions":35,"../stores/MovieAddStore":53,"../utilities/Helpers":56,"react":"react"}],43:[function(require,module,exports){
+},{"../actions/MovieAddActions":35,"../stores/MovieAddStore":53,"react":"react"}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -4571,7 +4484,6 @@ var NavbarUserMenu = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var userData = this.props.userData;
       var userMenu = void 0;
       if (!this.state.loggedInUserId) {
         userMenu = _react2.default.createElement(
@@ -4582,7 +4494,7 @@ var NavbarUserMenu = function (_React$Component) {
             null,
             _react2.default.createElement(
               'a',
-              { href: '/user/login', onClick: userData.loginUser },
+              { href: '/user/login', onClick: _UserActions2.default.loginUser },
               'Login'
             )
           ),
@@ -4614,7 +4526,7 @@ var NavbarUserMenu = function (_React$Component) {
             null,
             _react2.default.createElement(
               'a',
-              { href: '#', onClick: userData.logoutUser },
+              { href: '#', onClick: _UserActions2.default.logoutUser },
               'Logout'
             )
           )
@@ -4846,6 +4758,16 @@ var MovieAddStore = function () {
       console.log('Failed to add movie', err);
     }
   }, {
+    key: 'onGetMoviePosterSuccess',
+    value: function onGetMoviePosterSuccess(data) {
+      this.moviePosterUrl = data.posterUrl;
+    }
+  }, {
+    key: 'onGetMoviePosterFail',
+    value: function onGetMoviePosterFail(err) {
+      console.log('Could not get movie post', err);
+    }
+  }, {
     key: 'onHandleNameChange',
     value: function onHandleNameChange(e) {
       this.name = e.target.value;
@@ -4855,12 +4777,21 @@ var MovieAddStore = function () {
   }, {
     key: 'onHandleDescriptionChange',
     value: function onHandleDescriptionChange(e) {
-      console.log(e);
+      console.log('Handling description change.Beeep!');
+      this.description = e.target.value;
+      this.genresValidationState = '';
+      this.helpBlock = '';
+    }
+  }, {
+    key: 'onHandleGenresChange',
+    value: function onHandleGenresChange(e) {
       var genreValue = e.target.value;
       if (this.genres.indexOf(genreValue) !== -1) {
         this.genres = _Helpers2.default.appendToArray(genreValue, this.genres);
+        e.target.setAttribute('checked', 'true');
       } else {
         this.genres = _Helpers2.default.removeFromArray(genreValue, this.genres);
+        e.target.setAttribute('checked', 'false');
       }
       this.genresValidationState = '';
       this.helpBlock = '';
@@ -5124,7 +5055,7 @@ var RequesterTMDB = function () {
         };
         $.ajax(request).done(function (tmdbResponse) {
           console.log('TMDB response', tmdbResponse);
-          if (tmdbResponse.total._results === 0) {
+          if (tmdbResponse.total_results === 0) {
             resolve({ posterUrl: UNVERIFIED_MOVIE_POSTER_URL });
             return;
           }

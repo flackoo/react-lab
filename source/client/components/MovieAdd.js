@@ -1,9 +1,7 @@
 import React from 'react'
 
-import MovieAddStore from '../stores/MovieAddStore'
 import MovieAddActions from '../actions/MovieAddActions'
-
-import Helpers from '../utilities/Helpers'
+import MovieAddStore from '../stores/MovieAddStore'
 
 export default class AddMovie extends React.Component {
   constructor (props) {
@@ -19,6 +17,7 @@ export default class AddMovie extends React.Component {
   }
 
   componentDidMount () {
+    console.log('Movie add listener attached.')
     MovieAddStore.listen(this.onChange)
   }
 
@@ -44,36 +43,7 @@ export default class AddMovie extends React.Component {
         description: this.state.description,
         genres: this.state.genres
       }
-
       MovieAddActions.addMovie(data)
-    }
-  }
-
-  handleNameChange (e) {
-    let name = e.target.value
-    this.setState({
-      name: name
-    })
-  }
-
-  handleDescriptionChange (e) {
-    let description = e.target.value
-    this.setState({
-      description: description
-    })
-  }
-
-  handleGenresChange (e) {
-    let genreValue = e.target.value
-    console.log('MovieAdd state', this.state)
-    if (this.state.genres.indexOf(genreValue) === -1) {
-      this.setState(prevState => ({
-        genres: Helpers.appendToArray(genreValue, prevState.genres)
-      }))
-    } else {
-      this.setState(prevState => ({
-        genres: Helpers.removeFromArray(genreValue, prevState.genres)
-      }))
     }
   }
 
@@ -110,37 +80,37 @@ export default class AddMovie extends React.Component {
                     <div className='checkbox checkbox-inline'>
                       <input type='checkbox' name='genres' id='horror' value='Horror'
                         checked={this.state.genres.indexOf('Horror') !== -1}
-                        onChange={this.handleGenresChange.bind(this)} />
+                        onClick={MovieAddActions.handleGenresChange} />
                       <label htmlFor='horror'>Horror</label>
                     </div>
                     <div className='checkbox checkbox-inline'>
                       <input type='checkbox' name='genres' id='sci-fi' value='Sci-fi'
                         checked={this.state.genres.indexOf('Sci-fi') !== -1}
-                        onChange={this.handleGenresChange.bind(this)} />
+                        onClick={MovieAddActions.handleGenresChange} />
                       <label htmlFor='sci-fi'>Sci-fi</label>
                     </div>
                     <div className='checkbox checkbox-inline'>
                       <input type='checkbox' name='genres' id='fantasy' value='Fantasy'
                         checked={this.state.genres.indexOf('Fantasy') !== -1}
-                        onChange={this.handleGenresChange.bind(this)} />
+                        onClick={MovieAddActions.handleGenresChange} />
                       <label htmlFor='fantasy'>Fantasy</label>
                     </div>
                     <div className='checkbox checkbox-inline'>
                       <input type='checkbox' name='genres' id='romance' value='Romance'
                         checked={this.state.genres.indexOf('Romance') !== -1}
-                        onChange={this.handleGenresChange.bind(this)} />
+                        onClick={MovieAddActions.handleGenresChange} />
                       <label htmlFor='romance'>Romance</label>
                     </div>
                     <div className='checkbox checkbox-inline'>
                       <input type='checkbox' name='genres' id='thriller' value='Thriller'
                         checked={this.state.genres.indexOf('Thriller') !== -1}
-                        onChange={this.handleGenresChange.bind(this)} />
+                        onClick={MovieAddActions.handleGenresChange} />
                       <label htmlFor='thriller'>Thriller</label>
                     </div>
                     <div className='checkbox checkbox-inline'>
                       <input type='checkbox' name='genres' id='adventure' value='Adventure'
                         checked={this.state.genres.indexOf('Adventure') !== -1}
-                        onChange={this.handleGenresChange.bind(this)} />
+                        onClick={MovieAddActions.handleGenresChange} />
                       <label htmlFor='adventure'>Adventure</label>
                     </div>
                   </div>

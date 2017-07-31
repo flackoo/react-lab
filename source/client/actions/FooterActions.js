@@ -7,7 +7,7 @@ class FooterActions {
     )
   }
 
-  getFiveRecentMoviesSuccess () {
+  getFiveRecentMovies () {
     let request = {
       method: 'get',
       url: '/api/movies/five-recent'
