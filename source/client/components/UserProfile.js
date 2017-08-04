@@ -1,6 +1,9 @@
 import React from 'react'
 
 import UserStore from '../stores/UserStore'
+import UserInfo from './sub-components/UserInfo'
+import UserVotedMovies from './sub-components/UserRatedMovies'
+import UserReviews from './sub-components/UserReviews'
 
 export default class UserProfile extends React.Component {
   constructor (props) {
@@ -34,31 +37,11 @@ export default class UserProfile extends React.Component {
     })
     return (
       <div>
-        <div className='container profile-container'>
-          <div className='profile-img'>
-            {/* <img src='/public/images/user-default.png'/> */}
-          </div>
-          <div className='profile-info clearfix'>
-            <h2><strong>{this.state.name}</strong></h2>
-            <h4 className='lead'>Roles:</h4>
-            {nodes.roles}
-            <p>{this.state.information}</p>
-          </div>
-        </div>
-        <div className='container profile-container'>
-          <div class='profile-stats clearfix'>
-            <ul>
-              <li>
-                <span className='stats-number'>{this.state.votes}</span> Votes
-              </li>
-            </ul>
-          </div>
-          <div className='pull-right btn-group'>
-            <a className='btn btn-primary'>
-              {this.state.showRatedMovies ? 'Hide' : 'RatedMovies'}
-            </a>
-          </div>
-        </div>
+        <UserInfo name={this.state.name}
+          roles={this.state.roles}
+          information={this.state.information} />
+        <UserVotedMovies votes={this.state.votes} />
+        <UserReviews reviews={this.props.reviews} />
       </div>
     )
   }

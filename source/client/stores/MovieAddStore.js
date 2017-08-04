@@ -38,7 +38,6 @@ class MovieAddStore {
   }
 
   onHandleDescriptionChange (e) {
-    console.log('Handling description change.Beeep!')
     this.description = e.target.value
     this.genresValidationState = ''
     this.helpBlock = ''
@@ -47,10 +46,10 @@ class MovieAddStore {
   onHandleGenresChange (e) {
     let genreValue = e.target.value
     if (this.genres.indexOf(genreValue) !== -1) {
-      this.genres = Helpers.appendToArray(genreValue, this.genres)
+      this.genres = Helpers.removeFromArray(genreValue, this.genres)
       e.target.setAttribute('checked', 'true')
     } else {
-      this.genres = Helpers.removeFromArray(genreValue, this.genres)
+      this.genres = Helpers.appendToArray(genreValue, this.genres)
       e.target.setAttribute('checked', 'false')
     }
     this.genresValidationState = ''

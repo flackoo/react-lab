@@ -22,6 +22,8 @@ class UserStore {
 
   onLogoutUserSuccess () {
     this.loggedInUserId = ''
+    this.username = ''
+    this.roles = []
   }
 }
 

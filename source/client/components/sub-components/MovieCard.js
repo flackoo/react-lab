@@ -40,7 +40,7 @@ export default class MovieCard extends React.Component {
         <div className='media movie'>
           <span className='position pull-left'>{this.props.index + 1}</span>
           <div className='pull-left thumb-lg'>
-            {nodes.posterNode}
+            {nodes.poster}
           </div>
           <div className='media-body'>
             <h4 className='media-heading'>

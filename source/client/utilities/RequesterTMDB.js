@@ -13,7 +13,7 @@ export default class RequesterTMDB {
       }
       $.ajax(request)
         .done(tmdbResponse => {
-          console.log('TMDB response', tmdbResponse)
+          // console.log('TMDB response', tmdbResponse)
           if (tmdbResponse.total_results === 0) {
             resolve({ posterUrl: UNVERIFIED_MOVIE_POSTER_URL })
             return

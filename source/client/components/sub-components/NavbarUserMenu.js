@@ -5,7 +5,7 @@ import UserActions from '../../actions/UserActions'
 import UserStore from '../../stores/UserStore'
 
 export default class NavbarUserMenu extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
 
     this.state = UserStore.getState()
@@ -13,19 +13,19 @@ export default class NavbarUserMenu extends React.Component {
     this.onChange = this.onChange.bind(this)
   }
 
-  onChange(state) {
+  onChange (state) {
     this.setState(state)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     UserStore.listen(this.onChange)
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     UserStore.unlisten(this.onChange)
   }
 
-  render() {
+  render () {
     let userMenu
     if (!this.state.loggedInUserId) {
       userMenu = (

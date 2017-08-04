@@ -28,7 +28,8 @@ class HomeActions {
               _id: payload[i]._id,
               name: payload[i].name,
               description: payload[i].description,
-              genres: payload[i].genres
+              genres: payload[i].genres,
+              moviePosterUrl: promises[i].posterUrl
             }
             movies.push(movieData)
           }

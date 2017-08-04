@@ -74,43 +74,43 @@ export default class AddMovie extends React.Component {
                     <div className='checkbox checkbox-inline'>
                       <input type='checkbox' name='genres' id='action' value='Action'
                         checked={this.state.genres.indexOf('Action') !== -1}
-                        onClick={MovieAddActions.handleGenresChange} />
+                        onChange={MovieAddActions.handleGenresChange} />
                       <label htmlFor='action'>Action</label>
                     </div>
                     <div className='checkbox checkbox-inline'>
                       <input type='checkbox' name='genres' id='horror' value='Horror'
                         checked={this.state.genres.indexOf('Horror') !== -1}
-                        onClick={MovieAddActions.handleGenresChange} />
+                        onChange={MovieAddActions.handleGenresChange} />
                       <label htmlFor='horror'>Horror</label>
                     </div>
                     <div className='checkbox checkbox-inline'>
                       <input type='checkbox' name='genres' id='sci-fi' value='Sci-fi'
                         checked={this.state.genres.indexOf('Sci-fi') !== -1}
-                        onClick={MovieAddActions.handleGenresChange} />
+                        onChange={MovieAddActions.handleGenresChange} />
                       <label htmlFor='sci-fi'>Sci-fi</label>
                     </div>
                     <div className='checkbox checkbox-inline'>
                       <input type='checkbox' name='genres' id='fantasy' value='Fantasy'
                         checked={this.state.genres.indexOf('Fantasy') !== -1}
-                        onClick={MovieAddActions.handleGenresChange} />
+                        onChange={MovieAddActions.handleGenresChange} />
                       <label htmlFor='fantasy'>Fantasy</label>
                     </div>
                     <div className='checkbox checkbox-inline'>
                       <input type='checkbox' name='genres' id='romance' value='Romance'
                         checked={this.state.genres.indexOf('Romance') !== -1}
-                        onClick={MovieAddActions.handleGenresChange} />
+                        onChange={MovieAddActions.handleGenresChange} />
                       <label htmlFor='romance'>Romance</label>
                     </div>
                     <div className='checkbox checkbox-inline'>
                       <input type='checkbox' name='genres' id='thriller' value='Thriller'
                         checked={this.state.genres.indexOf('Thriller') !== -1}
-                        onClick={MovieAddActions.handleGenresChange} />
+                        onChange={MovieAddActions.handleGenresChange} />
                       <label htmlFor='thriller'>Thriller</label>
                     </div>
                     <div className='checkbox checkbox-inline'>
                       <input type='checkbox' name='genres' id='adventure' value='Adventure'
                         checked={this.state.genres.indexOf('Adventure') !== -1}
-                        onClick={MovieAddActions.handleGenresChange} />
+                        onChange={MovieAddActions.handleGenresChange} />
                       <label htmlFor='adventure'>Adventure</label>
                     </div>
                   </div>
